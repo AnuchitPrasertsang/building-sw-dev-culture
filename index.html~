@@ -41,7 +41,7 @@
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
 		</script>
-		<!--script>
+		<script>
 			if( window.location.search.match( /print-pdf/gi ) ) {
 			var link = document.createElement( 'link' );
 			link.rel = 'stylesheet';
@@ -49,7 +49,7 @@
 			link.href = 'css/print/pdf.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 			}
-		</script-->
+		</script>
 
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
@@ -146,7 +146,7 @@
 					Test Note
 				</aside>
 			</section>
-			<section>
+			<section id="fragments">
 				<h2>Agenda (Continued)</h2>				
 					<ul>
 						<li class="fragment">Spring Bean Definition</li>
@@ -234,13 +234,16 @@
                             <h2>
                                 Dependency Injection (DI)
                             </h2>
-                            <ul>					
+                            <ul>
+				 	<li >Simplify use of popular technologies</li>  
+					<li >Integration with other technologies</li>
+					
 					<li>Aims to offer a simpler mechanism for provisioning component dependencies and managing these dependencies throughout their lifecycles.</li>
-					<li>"Hollywood Principle"</li>
+					<li>“Hollywood Principle”</li>
 						<ul>
 							<li>Don't call me, I'll call you</li>
 						</ul>
-					<li>"Container" resolves (injects) dependencies of components by setting implementation object (push)</li>
+					<li>“Container” resolves (injects) dependencies of components by setting implementation object (push)</li>
 						
 					
                 		</ul>
@@ -274,7 +277,7 @@
 			<section>
 				<h2>Setter Dependency Injection</h2>
 				<pre><code class="data-trim contenteditable">public class SetterInjection {
-			
+
     private Dependency dep;
     
     public void setMyDependency(Dependency dep) {
@@ -291,12 +294,9 @@
                     <section>
                         <section>
                             <h2><font style="font-size: 112px;" color="#3c78d8">DI Support in Spring</font>&nbsp;</h2>
-			    <center>              
-			 	<img style="height:500px;" src="images/DI.jpg"/>
-			    </center>
                         </section>
-                        <section data-background="images/beans.jpg" >
-                            <h2><font color="white">Sub-topics</font></h2>
+                        <section>
+                            <h2>Sub-topics</h2>
                             
 				<ul>
 				 	<li ><font color="#3c78d8">BeanFactory&nbsp;</font>interface</li>
@@ -319,7 +319,9 @@
 						<li >BeanFactory object has to be created by the application typically in the form of XmlBeanFactory</li>
 						<li >Once created, the application can access the beans via BeanFactory interface</li>
 					</ul>
-                </ul>
+					<li>Beans</li>
+					<li>Injection parameters</li>
+                		</ul>
                         </section>
 			<section>
                             <h2>BeanFactory Implementations</h2>
@@ -334,7 +336,7 @@
 			<section>
                             <h2>Reading XML Configuration <br/>File via<br/>
 XmlBeanFactory class</h2>
-			<pre><code class="data-trim contenteditable" style="width:950px">
+			<pre><code class="data-trim contenteditable">
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.FileSystemResource;
 
@@ -342,7 +344,8 @@ public class XmlConfigWithBeanFactory {
     public static void main(String[] args) {
         XmlBeanFactory factory = 
               new XmlBeanFactory(new FileSystemResource("beans.xml"));
-       SomeBeanInterface b = (SomeBeanInterface) factory.getBean("nameOftheBean");
+       SomeBeanInterface b = 
+             (SomeBeanInterface) factory.getBean("nameOftheBean");
     }
 }
 			   </code></pre>
@@ -352,7 +355,11 @@ public class XmlConfigWithBeanFactory {
 				<ul>
 				 	<li >Each bean is defined using<img style="position: relative; height:55px; left: 0px; top: 35px;" src="images/bean.png"/>tag under the root of the &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="position:absolute; height:55px; left: 130px; top: 185px;" src="images/beans.png"/> tag</li>
 					<li >The <b>id</b> attribute is used to give the bean its default name</li>
-					<li >The <b>class</b> attribute specifies the type of the bean<br/> (class of the bean)</li>
+					<li >The <b>class</b> attribute specifies the type of the bean (class of the bean)</li>
+					<ul> 
+						<li >Convenience extension of DefaultListableBeanFactory that reads bean definitions from an XML document</li>
+						
+					</ul>
                 		</ul>
 			</section>
 			<section>
@@ -365,69 +372,26 @@ public class XmlConfigWithBeanFactory {
                 		</ul>
 			</section>
 			<section>
-				<h2 >Basic Bean Creation</h2>
-                <center>
-				<pre class="fragment" style="font-size: 30px;" ><code class="data-trim contenteditable">
-  HelloWorld hello = new mypackage.HelloWorld();
-                </code></pre>
-                              
-			 	   <img class="fragment" style="height:100px;" src="images/arrow2.png"/>
-			    
-                <pre class="fragment" style="font-size: 30px;"><code class="data-trim contenteditable" style="width:950px;">
- <bean id="hello" 	class="mypackage.HelloWorld" ></bean>
-                </code></pre>
-                </center>
+				<h2>Basic Bean Creation</h2>
+				<ul>
+				 	<li >Basic Bean Define</li>
+                		</ul>
+				<pre><code class="data-trim contenteditable"><bean id="…" 	class="…" >
+					</bean></code></pre>
 			</section>
 			<section>
 				<h2>Basic Constructor Injection</h2>
-                <center>
-				<pre class="fragment" style="font-size: 30px;" ><code class="data-trim contenteditable" style="width:1010px;">
-HelloWorld hello = new mypackage.HelloWorld("Hello World");
-                </code></pre>            
-			 	   <img class="fragment" style="height:100px;" src="images/arrow2.png"/>
-                <pre class="fragment" style="font-size: 30px;"><code class="data-trim contenteditable" style="width:950px;">
- <bean id="hello" 	class="mypackage.HelloWorld" >
-    &lt;constructor-arg value=&quot;Hello World&quot;/&gt;
- </bean>
-                </code></pre>
-                </center>
+				<pre><code class="data-trim contenteditable"><!-- Basic Construct inject -->
+					<bean id="....." class="......">
+						<constructor-arg value="......" />
+					</bean></code></pre>
 			</section>
 			<section>
 				<h2>Basic Setter Injection</h2>
-                <center>
-				<pre class="fragment" style="font-size: 30px;" ><code class="data-trim contenteditable" style="width:900px;">
-   HelloWorld hello = new mypackage.HelloWorld();
-              hello.setMessage("Hello World");
-                </code></pre>            
-			 	   <img class="fragment" style="height:100px;" src="images/arrow2.png"/>
-                <pre class="fragment" style="font-size: 30px;"><code class="data-trim contenteditable" style="width:900px;">
- <bean id="hello" 	class="mypackage.HelloWorld" >
-    &lt;property name=&quot;message&quot; value=&quot;Hello World&quot;/&gt;
- </bean>
-                </code></pre>
-                </center>
-			</section>
-            <section>
-				<h2>Reference Injection</h2>
-                <center>
-				<pre class="fragment" style="font-size: 23px;" ><code class="data-trim contenteditable" style="width:900px;">
-   HelloWorld hello = ...
-   
-   MessageService msgService = new mypackage.MessageService();
-                  msgService.setMessageProvider(hello)
-                </code></pre>            
-			 	   <img class="fragment" style="height:50px;margin-top:0px;margin-bottom:0px;margin-right:0px;
-margin-left:0px;" src="images/arrow2.png"/>
-                <pre class="fragment" style="font-size: 23px;"><code class="data-trim contenteditable" style="width:900px;">
- <bean id="hello" 	class="mypackage.HelloWorld" >
-    .....
- </bean>
- 
- <bean id="msgService" 	class="mypackage.MessageService" >
-    &lt;property name=&quot;messageProvider&quot; ref=&quot;hello&quot;/&gt;
- </bean>
-                 </code></pre>
-                </center>
+				<pre><code class="data-trim contenteditable"><!-- Basic Setter inject -->
+				<bean id="....." class="......">
+					<property  name="...." value="......" />
+				</bean></code></pre>
 			</section>
 			<section>
 				<h3>Lab2</h3>
@@ -435,9 +399,8 @@ margin-left:0px;" src="images/arrow2.png"/>
 
 </a>
 			</section>
-                       
-        </section>
-        <section>
+                    </section>
+                    <section>
 			<div style="position:relative ; left:0px; top:-350px;">
 				<h2>Spring Injecting Collection</h2>
 			</div>
@@ -456,15 +419,15 @@ margin-left:0px;" src="images/arrow2.png"/>
 				<li >List(example)</li>
    			    </ul>
 				<pre><code class="data-trim contenteditable">
-                         <property name="addressList">
-                            <list>
-                                <value>INDIA</value>
-                                <value>Pakistan</value>
-                                <value>USA</value>
-                                <value>USA</value>
-                                <value>INDIA</value>
-                            </list>
-                         </property>
+					<property name="addressList">
+						<list>
+							<value>INDIA</value>
+							<value>Pakistan</value>
+							<value>USA</value>
+							<value>USA</value>
+							<value>INDIA</value>
+						</list>
+					  </property>
 				</code></pre>
 			    
 			
@@ -475,14 +438,14 @@ margin-left:0px;" src="images/arrow2.png"/>
 				<li >Set(example)</li>
    			    </ul>
 				<pre><code class="data-trim contenteditable">
-                     <property name="addressSet">
-                        <set>
-                            <value>INDIA</value>
-                            <value>Pakistan</value>
-                            <value>USA</value>
-                            <value>USA</value>
-                        </set>
-                     </property>
+					<property name="addressSet">
+						<set>
+							<value>INDIA</value>
+							<value>Pakistan</value>
+							<value>USA</value>
+							value>USA</value>
+						</set>
+					</property>
 				</code></pre>
                         </section>
 			<section>
@@ -491,13 +454,14 @@ margin-left:0px;" src="images/arrow2.png"/>
 				<li >Map(example)</li>
    			    </ul>
 				<pre><code class="data-trim contenteditable">
-                    <property name="addressMap">
-                        <map>
-                            &lt;entry key=&quot;1&quot; value=&quot;INDIA&quot;/&gt;
-                            &lt;entry key=&quot;2&quot; value=&quot;Pakistan&quot;/&gt;
-                            &lt;entry key=&quot;4&quot; value=&quot;USA&quot;/&gt;
-                        </map>
-                    </property>
+					<property name="addressMap">
+						<map>
+							<entry key="1" value="NDIA"/>
+							<entry key="2" value="Pakistan"/>
+							<entry key="3" value="USA"/>
+							<entry key="4" value="USA"/>
+						</map>
+					</property>
 				</code></pre>
                         </section>
 			<section>
@@ -506,14 +470,14 @@ margin-left:0px;" src="images/arrow2.png"/>
 				<li >Properties(example)</li>
    			    </ul>
 				<pre><code class="data-trim contenteditable">
-                    <property name="addressProp">
-                        <props>
-                            <prop key="one">INDIA</prop>
-                            <prop key="two">Pakistan</prop>
-                            <prop key="three">USA</prop>
-                            <prop key="four">USA</prop>
-                        </props>
-                    </property>
+					<property name="addressProp">
+						<props>
+							<prop key="one">INDIA</prop>
+							<prop key="two">Pakistan</prop>
+							<prop key="three">USA</prop>
+							<prop key="four">USA</prop>
+						</props>
+					</property>
 				</code></pre>
                         </section>
 			<section>
@@ -555,62 +519,54 @@ margin-left:0px;" src="images/arrow2.png"/>
 		
 			</ul>
                     </section>
-				    <section>
-                        <section data-background="images/beans.jpg" data-background-size="100%" data-background-repeat="repeat">
-                            <br/>
-                           <h1><font color="white">Bean Scopes</font></h1>
-                        </section>
-                        <section>
-                            <h3>singleton [default]</h3>
-                            <img class="fragment" style="height:500px;" src="images/singletonScope.png"/>
-                        </section>
-                        <section>
-                            <h3>prototype</h3>
-                            <img class="fragment" style="height:500px;" src="images/prototypeScope.png"/>     
-                        </section>
-                        <section>
-                                <h3>Other Scopes</h3>
-                                <ul>
-                                    <li>request [HTTP request]</li>
-                                    <li>session [HTTP session]</li>
-                                    <li>global-session [gobal HTTP session]<br/></li>
-                                    <li><font color="orange">custom scopes</font></li>
-                                </ul>     
-                        </section>
+					                    <section>
+                        <h2>Spring Bean Scopes</h2>
+                        <ul>
+				<li >The Spring Framework have the option of declaring a scope for that bean supports following five scopes.</li>
+				<li >singleton [default]</li>
+				<li >prototype</li>
+				<li >request [HTTP request]</li>
+				<li >session [HTTP session]</li>
+				<li >global-session [gobal HTTP session]</li>
+			</ul>
+			</ul>
                     </section>
-          <section>
+                    <section>
 			<section>
-                <h2>Spring Bean Life Cycle</h2>
-                <img style="height:500px;" src="images/spring-bean-lifecycle_thumb.png"/> 
+		                <h2>Spring Bean Life Cycle</h2>
+		                <ul>
+		                    <li> <span>Initialization callbacks</span> </li>
+		                    <li> <span>Destruction callbacks</span> </li>
+		                </ul>
 			</section>
 			<section>
 		                <h2>Initialization callbacks</h2>
 				<pre><code class="data-trim contenteditable">
-    public class ExampleBean {
-        public void init() {
-            // do some initialization work
-        }
-    }
-                </code></pre>
-                <pre><code class="data-trim contenteditable">
- &lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot; init-method=&quot;init&quot;/&gt;
-                </code></pre>
+					public class ExampleBean {
+						public void init() {
+							// do some initialization work
+						}
+					}
+					<bean id="exampleBean"
+						class="examples.ExampleBean" 
+						init-method="init"/>
+				
+				</code></pre>
 			</section>
 			<section>
 		                <h2>Destruction callbacks</h2>
-				<pre><code class="data-trim contenteditable">
-    public class ExampleBean {
-        public void destroy() {
-            // do some destruction work
-        }
-    }
-			    </code></pre>
-                <pre><code class="data-trim contenteditable" style="width:900px;">
- &lt;bean id=&quot;exampleBean&quot; class=&quot;examples.ExampleBean&quot; destroy-method=&quot;destroy&quot;/&gt;
+				<pre><code class="data-trim contenteditable">public class ExampleBean {
+						public void destroy() {
+							// do some destruction work
+						}
+					}
+				<bean id="exampleBean"
+						class="examples.ExampleBean" 
+							destroy-method="destroy"/>
 				</code></pre>
 			</section>
-         </section>
-         <section>
+                    </section>
+                    <section>
 			<section>
 		                <h2>Spring Beans Auto-Wiring</h2>
 		                <ul>
@@ -642,11 +598,11 @@ margin-left:0px;" src="images/arrow2.png"/>
 			            </ul>
 				    <li>autowire="autodetect"</li>
 			            <ul>
-			            	<li>Spring will attempt to autowire by constructor first,If a suitable constructor-to-bean match cant't be found,then Spring will attempt to autowiring using "type"</li>
+			            	<li>If default constructor exists, do autowiring using "type", otherwise use "constructor"</li>
 			            </ul>
 			        </ul>	
 			</section>
-         </section>
+                    </section>
 		 <section>
 			<div style="position:relative ; left:0px; top:-350px;">
 				<h2>Spring Annotation Based Configuration</h2>
@@ -654,20 +610,20 @@ margin-left:0px;" src="images/arrow2.png"/>
                         <section>	
                             	<h2>&nbsp;</h2>	
 				<h2>&nbsp;</h2>
-		                <pre><code class="data-trim contenteditable" style="width:900px;">
- &lt;?xml version="1.0" encoding="UTF-8"?&gt;
- &lt;beans  xmlns="http://www.springframework.org/schema/beans" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:context="http://www.springframework.org/schema/context"
-         xsi:schemaLocation="http://www.springframework.org/schema/beans
-         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-         http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context-3.0.xsd"&gt;
+		                <pre><code class="data-trim contenteditable" >
+				<?xml version="1.0" encoding="UTF-8"?>
+					<beans xmlns="http://www.springframework.org/schema/beans" 
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xmlns:context="http://www.springframework.org/schema/context"
+					xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-         &lt;context:annotation-config/&gt;
+					<context:annotation-config/>
 
-         &lt;!-- bean definitions go here --&gt;
- &lt;/beans&gt;		
+					<!-- bean definitions go here -->
+					</beans>			
 				</code></pre>
                     </section>
                     <section>
